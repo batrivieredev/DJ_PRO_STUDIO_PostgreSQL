@@ -1,0 +1,528 @@
+{% extends "base.html" %}
+
+{% block title %}DJ Pro Studio{% endblock %}
+
+{% block content %}
+<div class="landing-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">
+                        <span class="gradient-text">DJ Pro Studio</span>
+                        <br>
+                        Une Expérience DJ Professionnelle
+                    </h1>
+                    <p class="hero-subtitle">Découvrez une plateforme de mixage avancée avec analyse en temps réel, effets professionnels et gestion de playlists intelligente.</p>
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-glow btn-lg">
+                            <span class="material-icons">play_circle</span>
+                            <span>Commencer</span>
+                        </a>
+                        <a href="{{ url_for('main.landing_details') }}" class="btn btn-outline-light btn-lg">
+                            <span class="material-icons">explore</span>
+                            <span>Découvrir en détail</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <div class="code-window">
+                            <div class="code-header">
+                                <span class="window-btn"></span>
+                                <span class="window-btn"></span>
+                                <span class="window-btn"></span>
+                                <span class="window-title">deck-controller.js</span>
+                            </div>
+                            <pre class="code-content"><code class="language-javascript">// Contrôleur de platine virtuelle
+class Deck {
+    constructor(id) {
+        this.audio = new Audio();
+        this.gainNode = audioContext.createGain();
+        this.analyserNode = audioContext.createAnalyser();
+
+        // Configuration FFT pour visualisation
+        this.analyserNode.fftSize = 2048;
+        this.bufferLength = this.analyserNode.frequencyBinCount;
+        this.dataArray = new Uint8Array(this.bufferLength);
+
+        // Connexion des nœuds audio
+        this.gainNode.connect(this.analyserNode);
+        this.analyserNode.connect(audioContext.destination);
+    }
+
+    // Analyse en temps réel
+    drawWaveform() {
+        requestAnimationFrame(() => this.drawWaveform());
+        this.analyserNode.getByteFrequencyData(this.dataArray);
+
+        // Rendu des fréquences
+        for(let i = 0; i < this.bufferLength; i++) {
+            const barHeight = this.dataArray[i] / 255 * height;
+            const hue = i / this.bufferLength * 360;
+            ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+            ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+        }
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title text-center">Fonctionnalités Professionnelles</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <span class="material-icons">equalizer</span>
+                        </div>
+                        <h3>Analyse Audio en Temps Réel</h3>
+                        <p>Visualisation des fréquences, détection automatique du BPM et synchronisation précise.</p>
+                        <div class="code-snippet">
+                            <pre><code class="language-javascript">// Analyse audio
+analyserNode.fftSize = 2048;
+analyserNode.getByteFrequencyData(dataArray);
+drawWaveform(ctx, dataArray);</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <span class="material-icons">dashboard</span>
+                        </div>
+                        <h3>Interface Multi-Platines</h3>
+                        <p>Jusqu'à 4 platines virtuelles avec contrôles indépendants et crossfader.</p>
+                        <div class="code-snippet">
+                            <pre><code class="language-javascript">const decks = {
+    a: new Deck('a'),
+    b: new Deck('b'),
+    c: new Deck('c'),
+    d: new Deck('d')
+};</code></pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <span class="material-icons">playlist_add</span>
+                        </div>
+                        <h3>Gestion de Playlists</h3>
+                        <p>Organisation intelligente avec drag & drop et recherche instantanée.</p>
+                        <div class="code-snippet">
+                            <pre><code class="language-javascript">// Gestion des playlists
+async loadPlaylist(id) {
+    const tracks = await fetch(
+        `/api/playlists/${id}/tracks`
+    ).then(r => r.json());</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Features -->
+    <section class="technical-section">
+        <div class="container">
+            <h2 class="section-title text-center">Fonctionnalités Techniques</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="tech-card">
+                        <h3>Moteur Audio Avancé</h3>
+                        <ul class="tech-list">
+                            <li>
+                                <span class="material-icons">audiotrack</span>
+                                <div>
+                                    <h4>Web Audio API</h4>
+                                    <p>Traitement audio professionnel avec latence minimale</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="material-icons">speed</span>
+                                <div>
+                                    <h4>Contrôle du Pitch</h4>
+                                    <p>Ajustement précis de la vitesse et synchronisation BPM</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="material-icons">waves</span>
+                                <div>
+                                    <h4>Visualisation en Temps Réel</h4>
+                                    <p>Analyse FFT et représentation des formes d'ondes</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="code-window">
+                        <div class="code-header">
+                            <span class="window-btn"></span>
+                            <span class="window-btn"></span>
+                            <span class="window-btn"></span>
+                            <span class="window-title">audio-engine.js</span>
+                        </div>
+                        <pre class="code-content"><code class="language-javascript">// Configuration du contexte audio
+const audioContext = new (window.AudioContext ||
+    window.webkitAudioContext)();
+
+// Nœuds de traitement
+const gainNode = audioContext.createGain();
+const analyserNode = audioContext.createAnalyser();
+const source = audioContext.createMediaElementSource(audio);
+
+// Configuration de l'analyseur
+analyserNode.fftSize = 2048;
+const bufferLength = analyserNode.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+// Chaîne de traitement
+source
+    .connect(gainNode)
+    .connect(analyserNode)
+    .connect(audioContext.destination);</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Get Started -->
+    <section class="get-started-section">
+        <div class="container text-center">
+            <h2 class="section-title">Prêt à Mixer ?</h2>
+            <p class="section-subtitle">Rejoignez DJ Pro Studio et commencez à mixer comme un pro</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-glow btn-lg">
+                    <span class="material-icons">login</span>
+                    <span>Se connecter</span>
+                </a>
+                <button type="button" class="btn btn-outline-light btn-lg" data-bs-toggle="modal" data-bs-target="#registerModal">
+                    <span class="material-icons">person_add</span>
+                    <span>Créer un compte</span>
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.landing-container {
+    background: radial-gradient(circle at center, var(--bg-light) 0%, var(--bg-darker) 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero-section {
+    padding: 6rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(13, 110, 253, 0.1), rgba(0, 255, 157, 0.1));
+    transform: skewY(-6deg);
+    transform-origin: top left;
+    z-index: -1;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.gradient-text {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+/* Code Windows */
+.code-window {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+    transition: transform 0.3s ease;
+}
+
+.code-window:hover {
+    transform: perspective(1000px) rotateY(-2deg) rotateX(2deg);
+}
+
+.code-header {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.window-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.window-btn:nth-child(1) { background: #ff5f56; }
+.window-btn:nth-child(2) { background: #ffbd2e; }
+.window-btn:nth-child(3) { background: #27c93f; }
+
+.window-title {
+    margin-left: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+}
+
+.code-content {
+    padding: 1.5rem;
+    margin: 0;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: #e6e6e6;
+}
+
+/* Features Section */
+.features-section {
+    padding: 6rem 0;
+    position: relative;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    background: linear-gradient(45deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-card {
+    background: rgba(42, 42, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.feature-icon .material-icons {
+    font-size: 32px;
+    color: white;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+}
+
+/* Technical Section */
+.technical-section {
+    padding: 6rem 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.2));
+}
+
+.tech-card {
+    background: rgba(42, 42, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+}
+
+.tech-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0 0;
+}
+
+.tech-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.tech-list li:hover {
+    transform: translateX(10px);
+}
+
+.tech-list .material-icons {
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+.tech-list h4 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.tech-list p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+/* Code Snippets */
+.code-snippet {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.code-snippet pre {
+    margin: 0;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.875rem;
+    color: #e6e6e6;
+}
+
+/* Get Started Section */
+.get-started-section {
+    padding: 6rem 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+}
+
+.section-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary-color), #1a8fff);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 110, 255, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 110, 255, 0.4);
+}
+
+.btn-outline-light {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 991.98px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-section {
+        padding: 4rem 0;
+    }
+
+    .hero-image {
+        margin-top: 3rem;
+    }
+
+    .code-window {
+        transform: none;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .feature-card {
+        margin-bottom: 2rem;
+    }
+}
+</style>
+{% endblock %}

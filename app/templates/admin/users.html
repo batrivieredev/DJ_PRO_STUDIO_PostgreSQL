@@ -1,0 +1,373 @@
+{% extends "admin/base.html" %}
+
+{% block page_title %}Gestion des Utilisateurs{% endblock %}
+
+{% block admin_content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <span class="material-icons me-2">group</span>
+            <h5 class="card-title mb-0">Liste des Utilisateurs</h5>
+        </div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal">
+            <span class="material-icons">person_add</span>
+            <span>Nouvel Utilisateur</span>
+        </button>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover">
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Email</th>
+                        <th>Droits</th>
+                        <th>Dernier accès</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="material-icons user-icon me-2">
+                                    {% if user.is_admin %}admin_panel_settings{% else %}person{% endif %}
+                                </span>
+                                <span class="user-name">{{ user.username }}</span>
+                            </div>
+                        </td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <div class="badge-group">
+                                {% if user.is_admin %}
+                                <span class="badge admin-badge">Admin</span>
+                                {% endif %}
+                                {% if user.can_access_mixer %}
+                                <span class="badge dj-badge">DJ</span>
+                                {% endif %}
+                                <span class="badge {% if user.is_active %}status-active{% else %}status-inactive{% endif %}">
+                                    {{ 'Actif' if user.is_active else 'Inactif' }}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            {% if user.last_login %}
+                            {{ user.last_login.strftime('%d/%m/%Y %H:%M') }}
+                            {% else %}
+                            <span class="text-muted">Jamais connecté</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user != current_user %}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-action" data-bs-toggle="modal"
+                                        data-bs-target="#editUserModal{{ user.id }}" title="Modifier">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');"
+                                      class="d-inline">
+                                    <button type="submit" class="btn btn-action btn-action-danger" title="Supprimer">
+                                        <span class="material-icons">delete</span>
+                                    </button>
+                                </form>
+                            </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{# Modals d'édition pour chaque utilisateur #}
+{% for user in users %}
+<div class="modal fade" id="editUserModal{{ user.id }}" tabindex="-1" aria-labelledby="editUserModalLabel{{ user.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('admin.update_user', user_id=user.id) }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel{{ user.id }}">
+                        <span class="material-icons me-2">edit</span>
+                        Modifier l'utilisateur {{ user.username }}
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-section mb-4">
+                        <h6 class="form-section-title">Droits utilisateur</h6>
+                        <div class="permission-grid">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" name="is_active" id="is_active{{ user.id }}" {% if user.is_active %}checked{% endif %}>
+                                <label class="form-check-label" for="is_active{{ user.id }}">Compte actif</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" name="can_access_mixer" id="can_access_mixer{{ user.id }}" {% if user.can_access_mixer %}checked{% endif %}>
+                                <label class="form-check-label" for="can_access_mixer{{ user.id }}">Accès DJ Mixer</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" name="is_admin" id="is_admin{{ user.id }}" {% if user.is_admin %}checked{% endif %}>
+                                <label class="form-check-label" for="is_admin{{ user.id }}">Droits administrateur</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="edit_email{{ user.id }}" name="email" value="{{ user.email }}" required>
+                        <label for="edit_email{{ user.id }}">Email</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="edit_password{{ user.id }}" name="password" placeholder="Nouveau mot de passe">
+                        <label for="edit_password{{ user.id }}">Nouveau mot de passe (optionnel)</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                        <span class="material-icons">close</span>
+                        <span>Annuler</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-icons">save</span>
+                        <span>Enregistrer</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{# Modal de création d'utilisateur #}
+<div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="POST" action="{{ url_for('admin.create_user') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createUserModalLabel">
+                        <span class="material-icons me-2">person_add</span>
+                        Nouvel Utilisateur
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="username" name="username" required>
+                        <label for="username">Nom d'utilisateur</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="email" name="email" required>
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <label for="password">Mot de passe</label>
+                    </div>
+
+                    <div class="form-section">
+                        <h6 class="form-section-title">Droits utilisateur</h6>
+                        <div class="permission-grid">
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" name="is_active" id="new_is_active" checked>
+                                <label class="form-check-label" for="new_is_active">Compte actif</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" name="can_access_mixer" id="new_can_access_mixer">
+                                <label class="form-check-label" for="new_can_access_mixer">Accès DJ Mixer</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input type="checkbox" class="form-check-input" name="is_admin" id="new_is_admin">
+                                <label class="form-check-label" for="new_is_admin">Droits administrateur</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                        <span class="material-icons">close</span>
+                        <span>Annuler</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-icons">person_add</span>
+                        <span>Créer</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.user-icon {
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+.badge-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 0.5em 1em;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.admin-badge {
+    background: linear-gradient(45deg, var(--primary-color), #1a8fff);
+}
+
+.dj-badge {
+    background: linear-gradient(45deg, #0dcaf0, #0a97b7);
+}
+
+.status-active {
+    background: linear-gradient(45deg, #198754, #20c997);
+}
+
+.status-inactive {
+    background: linear-gradient(45deg, #dc3545, #b02a37);
+}
+
+.btn-action {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-action.btn-action-danger:hover {
+    background: rgba(220, 53, 69, 0.2);
+    border-color: rgba(220, 53, 69, 0.3);
+    color: #dc3545;
+}
+
+.modal-content {
+    background: rgba(42, 42, 42, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 16px 16px 0 0;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+}
+
+.form-section {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.form-section-title {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+.permission-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.form-floating {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.form-control {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 12px;
+    height: 3.5rem;
+    padding: 1rem 0.75rem;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+    color: white;
+}
+
+.form-floating > label {
+    padding: 1rem 0.75rem;
+}
+
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    transform: scale(0.85) translateY(-0.75rem) translateX(0.15rem);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-check {
+    padding-left: 2rem;
+}
+
+.form-switch .form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+    margin-left: -2rem;
+}
+
+.form-check-input {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.form-check-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+.modal {
+  z-index: 1055 !important;
+}
+
+.modal-backdrop {
+  z-index: 1050 !important;
+}
+
+</style>
+{% endblock %}

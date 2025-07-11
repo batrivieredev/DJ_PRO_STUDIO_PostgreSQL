@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mixer.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid vh-100 d-flex flex-column bg-dark text-light p-0">
+    <!-- Barre de navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary px-3">
+        <div class="d-flex align-items-center">
+            <div class="btn-group me-3" role="group">
+                <button id="layout2Decks" class="btn btn-outline-primary active">2 Decks</button>
+                <button id="layout4Decks" class="btn btn-outline-primary">4 Decks</button>
+            </div>
+            <button class="btn btn-outline-secondary me-2" onclick="scanLibrary()">
+                <span class="material-icons">refresh</span>
+            </button>
+            <button class="btn btn-outline-secondary" id="togglePlaylists">
+                <span class="material-icons">queue_music</span>
+            </button>
+        </div>
+        <div class="ms-auto">
+            {% if current_user.can_access_converter %}
+            <a href="{{ url_for('main.converter') }}" class="btn btn-outline-secondary me-2">
+                <span class="material-icons">transform</span>
+            </a>
+            {% endif %}
+            <form action="{{ url_for('main.loading') }}" method="get" class="d-inline me-2">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <span class="material-icons">home</span>
+                </button>
+            </form>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 d-flex">
+        <!-- Panneau des playlists -->
+        <div class="playlists-panel p-3" style="width: 250px;">
+            <h5 class="mb-3">Playlists</h5>
+            <div class="playlists-content">
+                <!-- Les playlists seront chargées dynamiquement -->
+            </div>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="flex-grow-1 d-flex flex-column">
+            <!-- Section des platines -->
+            <div class="container-fluid p-3">
+            <div class="row g-3 two-decks">
+                <!-- Deck A -->
+                <div class="col-md-6">
+                    <div class="card bg-dark border-primary" id="deck-a">
+                        <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Deck A</h5>
+                            <div class="text-end">
+                                <div class="track-name text-truncate">No Track</div>
+                                <small class="text-muted bpm-display">--- BPM</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="controls btn-group w-100 mb-3">
+                                <button class="btn btn-outline-primary"><span class="material-icons">play_arrow</span></button>
+                                <button class="btn btn-outline-primary"><span class="material-icons">pause</span></button>
+                                <button class="btn btn-outline-primary"><span class="material-icons">adjust</span></button>
+                                <button class="btn btn-outline-primary"><span class="material-icons">loop</span></button>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <label class="form-label">Volume</label>
+                                    <input type="range" class="form-range" id="volume-a" min="0" max="100" value="100">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Pitch</label>
+                                    <input type="range" class="form-range" id="pitch-a" min="-8" max="8" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck B -->
+                <div class="col-md-6">
+                    <div class="card bg-dark border-danger deck" id="deck-b">
+                        <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Deck B</h5>
+                            <div class="text-end">
+                                <div class="track-name text-truncate">No Track</div>
+                                <small class="text-muted bpm-display">--- BPM</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="controls btn-group w-100 mb-3">
+                                <button class="btn btn-outline-danger"><span class="material-icons">play_arrow</span></button>
+                                <button class="btn btn-outline-danger"><span class="material-icons">pause</span></button>
+                                <button class="btn btn-outline-danger"><span class="material-icons">adjust</span></button>
+                                <button class="btn btn-outline-danger"><span class="material-icons">loop</span></button>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <label class="form-label">Volume</label>
+                                    <input type="range" class="form-range" id="volume-b" min="0" max="100" value="100">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Pitch</label>
+                                    <input type="range" class="form-range" id="pitch-b" min="-8" max="8" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck C -->
+                <div class="col-md-6">
+                    <div class="card bg-dark border-warning deck" id="deck-c">
+                        <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Deck C</h5>
+                            <div class="text-end">
+                                <div class="track-name text-truncate">No Track</div>
+                                <small class="text-muted bpm-display">--- BPM</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="controls btn-group w-100 mb-3">
+                                <button class="btn btn-outline-warning"><span class="material-icons">play_arrow</span></button>
+                                <button class="btn btn-outline-warning"><span class="material-icons">pause</span></button>
+                                <button class="btn btn-outline-warning"><span class="material-icons">adjust</span></button>
+                                <button class="btn btn-outline-warning"><span class="material-icons">loop</span></button>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <label class="form-label">Volume</label>
+                                    <input type="range" class="form-range" id="volume-c" min="0" max="100" value="100">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Pitch</label>
+                                    <input type="range" class="form-range" id="pitch-c" min="-8" max="8" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deck D -->
+                <div class="col-md-6">
+                    <div class="card bg-dark border-info deck" id="deck-d">
+                        <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Deck D</h5>
+                            <div class="text-end">
+                                <div class="track-name text-truncate">No Track</div>
+                                <small class="text-muted bpm-display">--- BPM</small>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="controls btn-group w-100 mb-3">
+                                <button class="btn btn-outline-info"><span class="material-icons">play_arrow</span></button>
+                                <button class="btn btn-outline-info"><span class="material-icons">pause</span></button>
+                                <button class="btn btn-outline-info"><span class="material-icons">adjust</span></button>
+                                <button class="btn btn-outline-info"><span class="material-icons">loop</span></button>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <label class="form-label">Volume</label>
+                                    <input type="range" class="form-range" id="volume-d" min="0" max="100" value="100">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Pitch</label>
+                                    <input type="range" class="form-range" id="pitch-d" min="-8" max="8" value="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section de mixage (crossfader) -->
+        <div class="bg-dark border-top border-bottom border-secondary p-3">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <input type="range" class="form-range crossfader" min="-100" max="100" value="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- Section bibliothèque musicale -->
+        <div class="flex-grow-1 bg-dark">
+            <div class="container-fluid p-3">
+                <div class="card bg-dark border-secondary">
+                    <div class="card-header bg-dark">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <div class="btn-group library-controls">
+                                    <button class="btn btn-outline-primary active" data-deck="A">Deck A</button>
+                                    <button class="btn btn-outline-danger" data-deck="B">Deck B</button>
+                                    <button class="btn btn-outline-warning" data-deck="C">Deck C</button>
+                                    <button class="btn btn-outline-info" data-deck="D">Deck D</button>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <input type="text" class="form-control form-control-sm" placeholder="Search tracks..." id="searchInput">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="upload-zone p-4 text-center" id="uploadZone">
+                            <span class="material-icons display-4 text-muted">cloud_upload</span>
+                            <p class="text-muted mb-0">Drop audio files here or click to upload</p>
+                            <input type="file" id="fileInput" multiple accept=".mp3,.wav,.ogg,.m4a" style="display: none;">
+                        </div>
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-dark table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Artist</th>
+                                        <th>BPM</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tracksList">
+                                    <!-- Les morceaux seront chargés dynamiquement -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/mixer.js') }}"></script>
+{% endblock %}

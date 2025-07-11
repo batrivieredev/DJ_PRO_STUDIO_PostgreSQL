@@ -1,0 +1,28 @@
+les boutons de la landingpage marchent pas, et quand je clqiue sur une playlist, les musiques de cette playlist ne s'affichent plus,
+batriviere@macbookpro-1 project_test % python3 initialization.py
+Initialization Progress: |█████████████████████████-------------------------| 50.0% Creating Database
+✓ Database tables exist, clearing data...
+Initialization Progress: |█████████████████████████████████████-------------| 75.0% Creating Admin
+👤 Creating admin user...
+Traceback (most recent call last):
+  File "/Users/batriviere/project_test/initialization.py", line 263, in <module>
+    initialize_system()
+  File "/Users/batriviere/project_test/initialization.py", line 232, in initialize_system
+    admin = User(
+  File "<string>", line 4, in __init__
+  File "/Users/batriviere/Library/Python/3.9/lib/python/site-packages/sqlalchemy/orm/state.py", line 480, in _initialize_instance
+    manager.dispatch.init_failure(self, args, kwargs)
+  File "/Users/batriviere/Library/Python/3.9/lib/python/site-packages/sqlalchemy/util/langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "/Users/batriviere/Library/Python/3.9/lib/python/site-packages/sqlalchemy/util/compat.py", line 207, in raise_
+    raise exception
+  File "/Users/batriviere/Library/Python/3.9/lib/python/site-packages/sqlalchemy/orm/state.py", line 477, in _initialize_instance
+    return manager.original_init(*mixed[1:], **kwargs)
+  File "/Users/batriviere/Library/Python/3.9/lib/python/site-packages/sqlalchemy/orm/decl_base.py", line 1142, in _declarative_constructor
+    raise TypeError(
+TypeError: 'can_access_converter' is an invalid keyword argument for User
+batriviere@macbookpro-1 project_test %
+
+
+je veux que la landing page soit sur http://127.0.0.1:5000/landingpage et non sur http://127.0.0.1:5000/
+quand je veux modifier un utilisateur c'est flouté

@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}Administration{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="container-fluid">
+        <div class="row">
+            {# Sidebar de navigation #}
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                <div class="position-sticky pt-3">
+                    <div class="sidebar-header mb-4">
+                        <div class="d-flex align-items-center px-3">
+                            <span class="material-icons logo-icon me-2">admin_panel_settings</span>
+                            <span class="logo-text">Administration</span>
+                        </div>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'admin.dashboard' %}active{% endif %}"
+                               href="{{ url_for('admin.dashboard') }}">
+                                <span class="material-icons me-2">dashboard</span>
+                                Tableau de bord
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'admin.users_list' %}active{% endif %}"
+                               href="{{ url_for('admin.users_list') }}">
+                                <span class="material-icons me-2">people</span>
+                                Utilisateurs
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            {# Contenu principal #}
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4">
+                    <h1 class="h2 page-title">{% block page_title %}{% endblock %}</h1>
+                </div>
+
+                {# Messages flash #}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} fade-in">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                {# Contenu spécifique de la page #}
+                {% block admin_content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-container {
+    background: radial-gradient(circle at center, var(--bg-light) 0%, var(--bg-darker) 100%);
+    min-height: 100vh;
+}
+
+.sidebar {
+    background: rgba(42, 42, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: calc(100vh - 48px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    padding-top: 1rem;
+    z-index: 100;
+}
+
+.sidebar-header {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-icon {
+    font-size: 2rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.8rem 1rem;
+    margin: 0.3rem 0.8rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link.active {
+    color: #fff;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.sidebar .nav-link:hover:not(.active) {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.page-title {
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+}
+
+.card {
+    background: rgba(42, 42, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px 16px 0 0;
+    padding: 1.5rem;
+}
+
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0;
+}
+
+.table thead th {
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 1rem;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.alert {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.alert-success {
+    background: rgba(25, 135, 84, 0.2);
+    color: #198754;
+}
+
+.alert-danger {
+    background: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
+.alert-warning {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary-color), #1a8fff);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 110, 255, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #1a8fff, var(--primary-color));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 110, 255, 0.4);
+}
+
+.material-icons {
+    font-size: 1.25rem;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 8px;
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100vh;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.show {
+        left: 0;
+    }
+}
+</style>
+{% endblock %}

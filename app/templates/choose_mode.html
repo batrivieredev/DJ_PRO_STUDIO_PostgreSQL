@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block title %}Choisir un mode{% endblock %}
+
+{% block content %}
+<div class="mode-select-container vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="mode-card">
+                    <div class="card-header">
+                        <h3 class="card-title text-center mb-0">
+                            <span class="material-icons logo-icon">headphones</span>
+                            <span class="logo-text">DJ Pro Studio</span>
+                        </h3>
+                    </div>
+                    <div class="card-body px-4 py-4">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} fade-in">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+
+                        <div class="d-grid gap-4">
+                            {% if current_user.is_admin %}
+                            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-primary mode-button admin-button">
+                                <span class="material-icons">admin_panel_settings</span>
+                                <span>Administration</span>
+                            </a>
+                            {% endif %}
+
+                            {% if current_user.is_admin and current_user.can_access_mixer %}
+                            <div class="divider">
+                                <span>MODE DJ</span>
+                            </div>
+                            {% endif %}
+
+                            {% if current_user.can_access_mixer %}
+                            <form action="{{ url_for('main.loading') }}" method="get" class="m-0">
+                                <button type="submit" class="btn mode-button dj-button w-100">
+                                    <span class="material-icons">playlist_play</span>
+                                    <span>DJ Mixer</span>
+                                </button>
+                            </form>
+                            {% endif %}
+
+                            {% if not current_user.is_admin and not current_user.can_access_mixer and not current_user.can_access_converter %}
+                            <div class="alert alert-warning fade-in">
+                                <span class="material-icons">warning</span>
+                                <span>Votre compte n'a pas encore d'accès. Un administrateur doit vous accorder les permissions nécessaires.</span>
+                            </div>
+                            {% endif %}
+
+                            {% if current_user.can_access_converter %}
+                            <div class="divider">
+                                <span>OUTILS</span>
+                            </div>
+
+                            <a href="{{ url_for('main.converter') }}" class="btn mode-button converter-button">
+                                <span class="material-icons">music_note</span>
+                                <span>Convertisseur Audio</span>
+                            </a>
+                            {% endif %}
+                        </div>
+
+                        <div class="text-center mt-5">
+                            <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light btn-glow-danger">
+                                <span class="material-icons">logout</span>
+                                <span>Déconnexion</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.mode-select-container {
+    background: radial-gradient(circle at center, var(--bg-light) 0%, var(--bg-darker) 100%);
+    min-height: 100vh;
+}
+
+.mode-card {
+    background: rgba(42, 42, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: translateY(0);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.mode-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.card-header {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 16px 16px 0 0;
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-right: 0.5rem;
+}
+
+.logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.mode-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.mode-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s ease;
+}
+
+.mode-button:hover::before {
+    left: 100%;
+}
+
+.admin-button {
+    background: linear-gradient(45deg, #0d6efd, #0dcaf0);
+    box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+}
+
+.admin-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 110, 253, 0.4);
+}
+
+.dj-button {
+    background: linear-gradient(45deg, #198754, #20c997);
+    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+    color: white;
+}
+
+.dj-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(25, 135, 84, 0.4);
+    color: white;
+}
+
+.converter-button {
+    background: linear-gradient(45deg, #0dcaf0, #0d6efd);
+    box-shadow: 0 4px 15px rgba(13, 202, 240, 0.3);
+    color: white;
+}
+
+.converter-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(13, 202, 240, 0.4);
+    color: white;
+}
+
+.btn-glow-danger {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-glow-danger:hover {
+    background: rgba(220, 53, 69, 0.2);
+    border-color: rgba(220, 53, 69, 0.3);
+    transform: translateY(-2px);
+}
+
+.divider {
+    text-align: center;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 50px);
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+.divider span {
+    background: rgba(42, 42, 42, 0.7);
+    padding: 0 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    color: rgba(255, 193, 7, 0.9);
+}
+
+.fade-in {
+    animation: fadeInAnimation 0.3s ease-in forwards;
+}
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.material-icons {
+    font-size: 24px;
+}
+</style>
+{% endblock %}

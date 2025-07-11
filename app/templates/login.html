@@ -1,0 +1,340 @@
+    {% extends "base.html" %}
+
+    {% block title %}Connexion{% endblock %}
+
+    {% block content %}
+    <div class="login-container vh-100 d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="login-card">
+                        <div class="card-header">
+                            <h3 class="card-title text-center mb-0">
+                                <span class="material-icons logo-icon">headphones</span>
+                                <span class="logo-text">DJ Pro Studio</span>
+                            </h3>
+                        </div>
+                        <div class="card-body px-4 py-4">
+                            <div class="text-center mb-4">
+                                <a href="{{ url_for('main.landingpage') }}" class="btn btn-outline-light btn-glow-secondary landing-btn">
+                                    <span class="material-icons">home</span>
+                                    <span>Découvrir DJ Pro Studio</span>
+                                </a>
+                            </div>
+
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                            {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} fade-in">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+
+                            <form method="POST" action="{{ url_for('auth.login') }}" class="login-form">
+                                <div class="form-group mb-4">
+                                    <div class="floating-input">
+                                        <input type="text" id="username" name="username" class="form-control" required autofocus>
+                                        <label for="username">
+                                            <span class="material-icons">person</span>
+                                            Nom d'utilisateur
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <div class="floating-input">
+                                        <input type="password" id="password" name="password" class="form-control" required>
+                                        <label for="password">
+                                            <span class="material-icons">lock</span>
+                                            Mot de passe
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2 mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-glow">
+                                        <span class="material-icons">login</span>
+                                        <span>Connexion</span>
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="divider">
+                                <span>ou</span>
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <p class="text-muted mb-3">Pas encore de compte ?</p>
+                                <button type="button" class="btn btn-outline-light btn-glow-secondary" data-bs-toggle="modal" data-bs-target="#registerModal">
+                                    <span class="material-icons">person_add</span>
+                                    <span>Créer un compte</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span class="material-icons">person_add</span>
+                        Créer un compte
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{{ url_for('auth.register') }}" id="registerForm" class="registration-form">
+                        <div class="form-group mb-4">
+                            <div class="floating-input">
+                                <input type="text" id="reg_username" name="username" class="form-control" required>
+                                <label for="reg_username">
+                                    <span class="material-icons">person</span>
+                                    Nom d'utilisateur
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <div class="floating-input">
+                                <input type="email" id="reg_email" name="email" class="form-control" required>
+                                <label for="reg_email">
+                                    <span class="material-icons">email</span>
+                                    Email
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <div class="floating-input">
+                                <input type="password" id="reg_password" name="password" class="form-control" required>
+                                <label for="reg_password">
+                                    <span class="material-icons">lock</span>
+                                    Mot de passe
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <div class="floating-input">
+                                <input type="password" id="reg_confirm_password" name="confirm_password" class="form-control" required>
+                                <label for="reg_confirm_password">
+                                    <span class="material-icons">lock_clock</span>
+                                    Confirmer le mot de passe
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                        <span class="material-icons">close</span>
+                        <span>Annuler</span>
+                    </button>
+                    <button type="submit" form="registerForm" class="btn btn-primary btn-glow">
+                        <span class="material-icons">how_to_reg</span>
+                        <span>Créer le compte</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .login-container {
+        background: radial-gradient(circle at center, var(--bg-light) 0%, var(--bg-darker) 100%);
+        min-height: 100vh;
+    }
+
+    .login-card {
+        background: rgba(42, 42, 42, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transform: translateY(0);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .login-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .logo-icon {
+        font-size: 2.5rem;
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-right: 0.5rem;
+    }
+
+    .logo-text {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, #ffffff, #cccccc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .landing-btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .landing-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .floating-input {
+        position: relative;
+        margin-bottom: 1rem;
+    }
+
+    .floating-input .form-control {
+        height: 3.5rem;
+        padding: 1rem 1rem 0.5rem 3rem;
+        font-size: 1rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .floating-input .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(0, 110, 255, 0.2);
+    }
+
+    .floating-input label {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        display: flex;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.6);
+        transition: all 0.3s ease;
+        pointer-events: none;
+    }
+
+    .floating-input label .material-icons {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+    }
+
+    .floating-input .form-control:focus + label,
+    .floating-input .form-control:not(:placeholder-shown) + label {
+        transform: translateY(-0.75rem) scale(0.85);
+        color: var(--primary-color);
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 500;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-glow {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(45deg, var(--primary-color), #1a8fff);
+        border: none;
+        box-shadow: 0 4px 15px rgba(0, 110, 255, 0.3);
+    }
+
+    .btn-glow:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 110, 255, 0.4);
+    }
+
+    .btn-glow-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-glow-secondary:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .divider {
+        text-align: center;
+        margin: 2rem 0;
+        position: relative;
+    }
+
+    .divider::before,
+    .divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: calc(50% - 30px);
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .divider::before {
+        left: 0;
+    }
+
+    .divider::after {
+        right: 0;
+    }
+
+    .divider span {
+        background: rgba(42, 42, 42, 0.7);
+        padding: 0 1rem;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+    }
+
+    .modal-content {
+        background: rgba(42, 42, 42, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+    }
+
+    .modal-header,
+    .modal-footer {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .fade-in {
+        animation: fadeInAnimation 0.3s ease-in forwards;
+    }
+
+    @keyframes fadeInAnimation {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    </style>
+    {% endblock %}

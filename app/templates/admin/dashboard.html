@@ -1,0 +1,150 @@
+{% extends "admin/base.html" %}
+
+{% block page_title %}Tableau de Bord{% endblock %}
+
+{% block admin_content %}
+<div class="row">
+    {# Statistiques utilisateurs #}
+    <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card bg-dark border-primary h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="material-icons text-primary me-2">group</span>
+                    <h5 class="card-title mb-0">Utilisateurs</h5>
+                </div>
+                <div class="row text-center">
+                    <div class="col">
+                        <h3 class="mb-0">{{ users|length }}</h3>
+                        <small class="text-muted">Total</small>
+                    </div>
+                    <div class="col">
+                        <h3 class="mb-0">{{ users|selectattr('is_active')|list|length }}</h3>
+                        <small class="text-muted">Actifs</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Statistiques DJ #}
+    <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card bg-dark border-info h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="material-icons text-info me-2">playlist_play</span>
+                    <h5 class="card-title mb-0">DJs</h5>
+                </div>
+                <div class="row text-center">
+                    <div class="col">
+                        <h3 class="mb-0">{{ users|selectattr('can_access_mixer')|list|length }}</h3>
+                        <small class="text-muted">Total DJ</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Liste des derniers utilisateurs #}
+    <div class="col-12 mt-4">
+        <div class="card bg-dark border-secondary">
+            <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">
+                    <span class="material-icons align-middle me-2">schedule</span>
+                    Derniers Utilisateurs Inscrits
+                </h5>
+                <a href="{{ url_for('admin.users_list') }}" class="btn btn-sm btn-outline-primary">
+                    Voir tous
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Email</th>
+                                <th>Date d'inscription</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users[-5:] %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="material-icons me-2">
+                                            {% if user.is_admin %}admin_panel_settings
+                                            {% else %}person{% endif %}
+                                        </span>
+                                        {{ user.username }}
+                                    </div>
+                                </td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    {% if user.created_at %}
+                                        {% set local_time = user.created_at.replace(tzinfo=None) + timedelta(hours=2) %}
+                                        {{ local_time.strftime('%d/%m/%Y %H:%M') }}
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <span class="badge {% if user.is_active %}bg-success{% else %}bg-danger{% endif %}">
+                                            {{ 'Actif' if user.is_active else 'Inactif' }}
+                                        </span>
+                                        {% if not user.can_access_mixer %}
+                                        <span class="badge bg-warning">En attente d'accès DJ</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if user != current_user %}
+                                    <form method="POST" action="{{ url_for('admin.update_user', user_id=user.id) }}" class="d-inline">
+                                        <input type="hidden" name="action" value="toggle_mixer_access">
+                                        <button type="submit" class="btn btn-sm btn-{{ 'outline-danger' if user.can_access_mixer else 'outline-success' }}">
+                                            {{ 'Retirer accès' if user.can_access_mixer else 'Autoriser accès' }}
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.material-icons {
+    font-size: 24px;
+    vertical-align: text-bottom;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.badge {
+    font-size: 0.8em;
+    padding: 0.4em 0.6em;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+</style>
+{% endblock %}

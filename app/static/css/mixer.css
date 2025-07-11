@@ -1,0 +1,238 @@
+/* Style personnalisé de la scrollbar pour le thème sombre */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* Styles de la zone de dépôt de fichiers */
+.upload-zone {
+    border: 2px dashed #666;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.upload-zone:hover {
+    border-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+.upload-zone.dragover {
+    border-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.2);
+}
+
+/* Personnalisation des contrôles des platines */
+#deck-a .btn-outline-primary:hover {
+    background-color: rgba(13, 110, 253, 0.2);
+}
+
+#deck-b .btn-outline-danger:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+}
+
+/* Personnalisation des curseurs (volume, pitch, etc.) */
+.form-range::-webkit-slider-thumb {
+    transition: transform 0.1s ease;
+}
+
+.form-range::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Personnalisation du tableau de morceaux */
+.table-dark {
+    --bs-table-bg: transparent;
+}
+
+.table-dark tbody tr:hover {
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.1);
+}
+
+.table-responsive {
+    background: #242424;
+    border-radius: 4px;
+    border: 1px solid #666;
+}
+
+#searchInput {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #666;
+    color: #fff;
+}
+
+#searchInput:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #0d6efd;
+    color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Troncature des informations de morceaux trop longues */
+.track-name {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Alignement des icônes Material Design */
+.material-icons {
+    vertical-align: middle;
+    font-size: 20px;
+}
+
+/* Styles des icônes dans les boutons */
+.btn .material-icons {
+    margin: -4px 0;
+    transition: transform 0.2s ease;
+}
+
+/* Animation de chargement (rotation) */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+/* États du bouton d'analyse BPM */
+button:disabled .material-icons {
+    opacity: 0.5;
+}
+
+button .material-icons.error {
+    color: var(--bs-danger);
+}
+
+/* Waveform styling */
+.waveform-container {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    background: #1a1a1a;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.waveform {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.waveform-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(128, 128, 128, 0.3);
+    pointer-events: none;
+}
+
+/* Playlist styles */
+.playlists-panel {
+    display: none;
+    background: #242424;
+    border-right: 1px solid #666;
+    height: calc(100vh - 56px); /* Navbar height */
+    overflow-y: auto;
+}
+
+.playlists-panel.active {
+    display: block;
+}
+
+.playlists-content {
+    height: calc(100% - 40px); /* Account for header */
+    overflow-y: auto;
+}
+
+.playlist-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.playlist-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.playlist-item.active {
+    background-color: rgba(13, 110, 253, 0.2);
+}
+
+/* Disposition en grille pour 4 platines (2x2) */
+.row.four-decks {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+}
+
+.row.four-decks .col-md-6 {
+    width: 100%;
+    max-width: 100%;
+    flex: none;
+}
+
+/* Disposition flex pour 2 platines (1x2) */
+.row.two-decks {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Track drag & drop */
+.track-row {
+    cursor: grab;
+}
+
+.track-row:active {
+    cursor: grabbing;
+}
+
+.deck.drag-over {
+    border-color: #0d6efd !important;
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+/* Theme toggle button */
+#themeToggle {
+    position: relative;
+    overflow: hidden;
+}
+
+#themeToggle .material-icons {
+    transition: transform 0.3s ease;
+}
+
+#themeToggle:hover .material-icons {
+    transform: rotate(180deg);
+}
+
+/* Crossfader styling */
+.crossfader {
+    height: 8px;
+}
+
+.crossfader::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+}

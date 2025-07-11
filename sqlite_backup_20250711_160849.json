@@ -1,0 +1,59 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "email": "admin@example.com",
+      "password_hash": "pbkdf2:sha256:260000$PneDxhoOsS7eJjMI$334eac65c3820a5397483ba6f59e2cdfe019b483c2148cb22ca1bb7c6dff009d",
+      "is_admin": true,
+      "can_access_mixer": true,
+      "is_active": true,
+      "created_at": "2025-07-11T14:08:49.136508",
+      "last_login": null
+    }
+  ],
+  "tracks": [
+    {
+      "id": 1,
+      "title": "Test Track",
+      "artist": "Test Artist",
+      "album": "Test Album",
+      "genre": "Test Genre",
+      "bpm": 120.0,
+      "key": "C",
+      "duration": 180.0,
+      "file_path": "/path/to/test.mp3",
+      "file_format": "mp3",
+      "file_size": 1024,
+      "created_at": "2025-07-11T14:08:49.153282",
+      "last_played": null,
+      "play_count": 0,
+      "waveform_data": null,
+      "user_id": 1
+    }
+  ],
+  "playlists": [
+    {
+      "id": 1,
+      "name": "Test Playlist",
+      "description": "A test playlist for migration",
+      "folder_path": null,
+      "is_auto": false,
+      "is_smart": false,
+      "smart_rules": null,
+      "created_at": "2025-07-11T14:08:49.149686",
+      "updated_at": "2025-07-11T14:08:49.149693",
+      "user_id": 1
+    }
+  ],
+  "playlist_tracks": [
+    {
+      "id": 1,
+      "playlist_id": 1,
+      "track_id": 1,
+      "position": 0,
+      "created_at": "2025-07-11T14:08:49.164240"
+    }
+  ],
+  "cue_points": []
+}

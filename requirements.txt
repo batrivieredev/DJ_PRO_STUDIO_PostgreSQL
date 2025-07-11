@@ -1,0 +1,14 @@
+Flask==2.0.1
+Flask-SQLAlchemy==2.5.1
+Flask-Login==0.5.0
+SQLAlchemy==1.4.23
+Werkzeug==2.0.1
+python-dotenv==0.19.0
+mutagen==1.45.1
+librosa==0.8.1
+numpy>=1.24.0
+ffmpeg-python==0.2.0
+pytube==12.1.0
+yt-dlp==2023.3.4
+pydub==0.25.1
+psycopg2-binary==2.9.9

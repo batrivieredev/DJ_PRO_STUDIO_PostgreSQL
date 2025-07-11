@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+
+{% block title %}DJ Pro Studio - Fonctionnalités Détaillées{% endblock %}
+
+{% block content %}
+<div class="landing-details-container">
+    <!-- Hero Section -->
+    <section class="hero-section-details">
+        <div class="container">
+            <h1 class="text-center mb-5">
+                <span class="gradient-text">Découvrez DJ Pro Studio</span>
+            </h1>
+            <p class="text-center hero-subtitle">Une suite complète d'outils pour les DJs professionnels</p>
+        </div>
+    </section>
+
+    <!-- Features Gallery -->
+    <section class="features-gallery">
+        <div class="container">
+            <!-- Interface de Mixage -->
+            <div class="feature-block">
+                <h2 class="section-title">Interface de Mixage Professionnelle</h2>
+                <div class="feature-content">
+                    <div class="feature-image">
+                        <img src="{{ url_for('static', filename='images/mixer.png') }}" alt="Interface de mixage" class="img-fluid rounded shadow-lg">
+                    </div>
+                    <div class="feature-description">
+                        <h3>Console de Mix Virtuelle</h3>
+                        <div class="code-window">
+                            <pre><code class="language-javascript">class DeckController {
+    constructor(id) {
+        this.audio = new Audio();
+        this.gainNode = audioContext.createGain();
+        this.analyserNode = audioContext.createAnalyser();
+        this.setupWaveform();
+    }
+
+    setupWaveform() {
+        this.analyserNode.fftSize = 2048;
+        this.bufferLength = this.analyserNode.frequencyBinCount;
+        this.dataArray = new Uint8Array(this.bufferLength);
+    }
+}</code></pre>
+                        </div>
+                        <p>Interface intuitive avec visualisation en temps réel des formes d'onde et contrôle précis du mix.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gestion des Playlists -->
+            <div class="feature-block">
+                <h2 class="section-title">Gestion Avancée des Playlists</h2>
+                <div class="feature-content">
+                    <div class="feature-image">
+                        <img src="{{ url_for('static', filename='images/playlist.png') }}" alt="Gestion des playlists" class="img-fluid rounded shadow-lg">
+                    </div>
+                    <div class="feature-description">
+                        <h3>Organisation Intelligente</h3>
+                        <div class="code-window">
+                            <pre><code class="language-javascript">// Gestion des playlists
+async function loadPlaylist(id) {
+    const tracks = await fetch(`/api/playlists/${id}/tracks`)
+        .then(r => r.json());
+
+    tracks.forEach(track => {
+        // Analyse BPM et métadonnées
+        analyzeBPM(track);
+        updateTrackInfo(track);
+    });
+}</code></pre>
+                        </div>
+                        <p>Organisez votre bibliothèque musicale avec des playlists personnalisées et une gestion intelligente des métadonnées.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Administration -->
+            <div class="feature-block">
+                <h2 class="section-title">Interface d'Administration</h2>
+                <div class="feature-content">
+                    <div class="feature-image-grid">
+                        <img src="{{ url_for('static', filename='images/PAGE_ADMINISTRATION.png') }}" alt="Page d'administration" class="img-fluid rounded shadow-lg">
+                        <img src="{{ url_for('static', filename='images/GESTION_DES_UTILISATEURS.png') }}" alt="Gestion des utilisateurs" class="img-fluid rounded shadow-lg">
+                    </div>
+                    <div class="feature-description">
+                        <h3>Gestion Complète des Utilisateurs</h3>
+                        <div class="code-window">
+                            <pre><code class="language-python">@admin.route('/users/create', methods=['POST'])
+@admin_required
+def create_user():
+    user = User(
+        username=request.form['username'],
+        email=request.form['email'],
+        is_active=True,
+        can_access_mixer=request.form.get('can_access_mixer', False)
+    )
+    db.session.add(user)
+    db.session.commit()</code></pre>
+                        </div>
+                        <p>Interface d'administration puissante pour gérer les utilisateurs et leurs permissions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Système d'Authentification -->
+            <div class="feature-block">
+                <h2 class="section-title">Système d'Authentification Sécurisé</h2>
+                <div class="feature-content">
+                    <div class="feature-image-grid">
+                        <img src="{{ url_for('static', filename='images/LOGIN.png') }}" alt="Page de connexion" class="img-fluid rounded shadow-lg">
+                        <img src="{{ url_for('static', filename='images/CREATION_DE_COMPTE_PAGE_LOGIN.png') }}" alt="Création de compte" class="img-fluid rounded shadow-lg">
+                    </div>
+                    <div class="feature-description">
+                        <h3>Gestion des Accès</h3>
+                        <div class="code-window">
+                            <pre><code class="language-python">@login_required
+@mixer_access_required
+def mixer():
+    """Protection des routes sensibles"""
+    return render_template('mixer.html')</code></pre>
+                        </div>
+                        <p>Système complet de gestion des utilisateurs avec différents niveaux d'accès et sécurité renforcée.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bibliothèque Musicale -->
+            <div class="feature-block">
+                <h2 class="section-title">Bibliothèque Musicale</h2>
+                <div class="feature-content">
+                    <div class="feature-image">
+                        <img src="{{ url_for('static', filename='images/liste_musique.png') }}" alt="Liste des musiques" class="img-fluid rounded shadow-lg">
+                    </div>
+                    <div class="feature-description">
+                        <h3>Gestion des Morceaux</h3>
+                        <div class="code-window">
+                            <pre><code class="language-javascript">// Analyse audio
+async function analyzeBPM(track) {
+    const audioData = await loadAudioData(track.url);
+    const tempo = detectBPM(audioData);
+    updateTrackMetadata(track.id, { bpm: tempo });
+}</code></pre>
+                        </div>
+                        <p>Bibliothèque musicale avec analyse automatique des BPM et organisation intelligente.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <div class="container text-center">
+            <h2 class="section-title">Prêt à Mixer ?</h2>
+            <div class="cta-buttons">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-glow btn-lg">
+                    <span class="material-icons">login</span>
+                    <span>Se connecter</span>
+                </a>
+                <a href="{{ url_for('main.index') }}" class="btn btn-outline-light btn-lg">
+                    <span class="material-icons">home</span>
+                    <span>Retour à l'accueil</span>
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.landing-details-container {
+    background: radial-gradient(circle at center, var(--bg-light) 0%, var(--bg-darker) 100%);
+    min-height: 100vh;
+}
+
+.hero-section-details {
+    padding: 6rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, rgba(13, 110, 253, 0.1), rgba(0, 255, 157, 0.1));
+}
+
+.gradient-text {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.features-gallery {
+    padding: 4rem 0;
+}
+
+.feature-block {
+    margin-bottom: 6rem;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.feature-block:nth-child(even) .feature-content {
+    flex-direction: row-reverse;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    background: linear-gradient(45deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-content {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+
+.feature-image {
+    flex: 1;
+}
+
+.feature-image img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.feature-image img:hover {
+    transform: scale(1.02);
+}
+
+.feature-image-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.feature-description {
+    flex: 1;
+}
+
+.feature-description h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(45deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.feature-description p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 1.5rem 0;
+}
+
+.code-window {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.code-window pre {
+    margin: 0;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #e6e6e6;
+}
+
+.cta-section {
+    padding: 6rem 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary-color), #1a8fff);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 110, 255, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 110, 255, 0.4);
+}
+
+.btn-outline-light {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 991.98px) {
+    .feature-content {
+        flex-direction: column !important;
+    }
+
+    .gradient-text {
+        font-size: 2.5rem;
+    }
+
+    .feature-image-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
