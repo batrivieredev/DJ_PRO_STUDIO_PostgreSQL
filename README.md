@@ -3,7 +3,7 @@
 ### 📦 **Build and Test Coverage**
 [![Version](https://img.shields.io/badge/version-1.0.0-brightgreen?style=for-the-badge&logo=git)](https://github.com/batrivieredev/DJ_PRO_STUDIO/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
-[![CI Build](https://github.com/batrivieredev/DJ_PRO_STUDIO/actions/workflows/ci.yml/badge.svg)](https://github.com/batrivieredev/DJ_PRO_STUDIO/actions)
+[![CI Build](https://github.com/batrivieredev/DJ_PRO_STUDIO_PostgreSQL/actions/workflows/ci.yml/badge.svg)](https://github.com/batrivieredev/DJ_PRO_STUDIO/actions)
 [![Deploy to Production](https://img.shields.io/badge/Deploy-Production-black)](https://mixer.fusikabdj.fr)
 
 ### 📊 **Project Statistics**
