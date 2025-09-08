@@ -5,8 +5,8 @@ SQLAlchemy==1.4.23
 Werkzeug==2.0.1
 python-dotenv==0.19.0
 mutagen==1.45.1
-librosa==0.8.1
-numpy>=1.24.0
+librosa==0.9.2
+numpy==1.24.4
 ffmpeg-python==0.2.0
 pytube==12.1.0
 yt-dlp==2023.3.4
