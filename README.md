@@ -13,18 +13,13 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/batrivieredev/DJ_PRO_STUDIO?style=for-the-badge&color=blue)
 
 ### 🔗 **Important Links**
-[![Landing Page](https://img.shields.io/badge/Landing_Page-DJ_Pro_Studio-blue?style=for-the-badge&logo=githubpages)](https://mixer.fusikabdj.fr)
-[![Swagger Docs](https://img.shields.io/badge/Swagger-Docs-3cb371?style=for-the-badge&logo=swagger)](http://localhost:8082/swagger-ui/index.html)
-[![Frontend](https://img.shields.io/badge/Frontend-127.0.0.1:5500-blue?style=for-the-badge&logo=googlechrome)](http://127.0.0.1:5500/)
-[![Project Board](https://img.shields.io/badge/Project-Board-orange?style=for-the-badge&logo=trello)](https://github.com/batrivieredev/DJ_PRO_STUDIO/projects)
-[![Discussions](https://img.shields.io/badge/GitHub-Discussions-blueviolet?style=for-the-badge&logo=github)](https://github.com/batrivieredev/DJ_PRO_STUDIO/discussions)
-[![📜 Changelog](https://img.shields.io/badge/Changelog-View-blue?style=for-the-badge)](CHANGELOG.md)
-[![🛠 Contributing](https://img.shields.io/badge/Contributing-Guide-orange?style=for-the-badge)](CONTRIBUTING.md)
-[![📑 Security](https://img.shields.io/badge/Security-Policy-red?style=for-the-badge)](SECURITY.md)
-[![🤝 Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-Active-blueviolet?style=for-the-badge)](CODE_OF_CONDUCT.md)
+[![Landing Page](https://img.shields.io/badge/Landing_Page-DJ_Pro_Studio-blue?style=for-the-badge&logo=githubpages)](https://mixer.fusikabdj.fr/landingpage)
+[![Flassger Docs](https://img.shields.io/badge/Flassger-Docs-3cb371?style=for-the-badge&logo=swagger)](https://mixer.fusikabdj.fr/apidocs/)
+[![Siteweb](https://img.shields.io/badge/Siteweb-https%3A%2F%2Fmixer.fusikabdj.fr-blue?style=for-the-badge&logo=googlechrome)](https://mixer.fusikabdj.fr/)
 
 [![🇬🇧 English Version](https://img.shields.io/badge/Docs-English-blue?style=for-the-badge&logo=readthedocs)](#english-version)
 [![🇫🇷 Version Française](https://img.shields.io/badge/Docs-Français-red?style=for-the-badge&logo=readthedocs)](#version-française)
+
 
 # English Version
 
