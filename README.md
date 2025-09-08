@@ -8,7 +8,7 @@
 
 ### 📊 **Project Statistics**
 ![GitHub Repo stars](https://img.shields.io/github/stars/batrivieredev/DJ_PRO_STUDIO?style=social)
-![GitHub forks](https://img.shields.io/github/forks/batrivieredev/DJ_PRO_STUDIO?style=social)
+![GitHub forks](https://img.shields.io/github/forks/batrivieredev/DJ_PRO_STUDIO?style=social) 
 [![GitHub Issues](https://img.shields.io/badge/Support-Issues-red?style=for-the-badge&logo=github)](https://github.com/batrivieredev/DJ_PRO_STUDIO/issues)
 ![GitHub last commit](https://img.shields.io/github/last-commit/batrivieredev/DJ_PRO_STUDIO?style=for-the-badge&color=blue)
 
